@@ -1,6 +1,6 @@
 // var assert = require('assert');
 
-var UserServiceImpl = require('./service/UserService.js');
+var UserServiceImpl = require('../service/UserService.js');
 userService = new UserServiceImpl();
 
 // userService.save({
