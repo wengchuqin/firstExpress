@@ -17,7 +17,7 @@ function UserServiceImpl() {
         users.push(user);
 
         fs.writeFileSync(dbPath, JSON.stringify(users));
-    }
+    };
 
 
 

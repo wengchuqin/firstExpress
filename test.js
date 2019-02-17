@@ -8,4 +8,4 @@ userService = new UserServiceImpl();
 // })
 
 var users = userService.findUsers(2, 3);
-console.log(users)
+console.log(users);
