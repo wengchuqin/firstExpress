@@ -32,6 +32,22 @@ function UserServiceImpl() {
         }
 
         return ret;
+    };
+
+
+    //{"name":"wcq","pwd":"123"},{"name":"wcq","pwd":"123"}
+    // 根据用户名和密码查找用户，如果存在，返回该对象。如果不存在，返回 null；
+    this.find = function (name, pwd) {
+        var data = fs.readFileSync(dbPath);
+        var users = JSON.parse(data);
+        console.log(users)
+        for (var i = 0; i < users.length; i++) {
+            if (users[i]["name"] == name && users[i]["pwd"] == pwd) {
+                return users[i];
+            }else{
+               return null;
+            }
+        }
     }
 }
 
