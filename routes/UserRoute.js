@@ -35,7 +35,7 @@ router.get('/people', function (req, res, next) {
 });
 //实现people接口，返回people字符串
 router.get('/number', function (req, res, next) {
-    res.end("afang smartb2");
+    res.end("afang smartsmart");
 });
 
 
