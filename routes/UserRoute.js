@@ -39,4 +39,9 @@ router.get('/number', function (req, res, next) {
 });
 
 
+//实现people接口，返回people字符串
+router.get('/number', function (req, res, next) {
+    res.end("wengchuqin no1");
+});
+
 module.exports = router;
