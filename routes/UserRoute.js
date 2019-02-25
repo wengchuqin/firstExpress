@@ -29,5 +29,9 @@ router.get('/hello', function (req, res, next) {
 });
 
 
+//实现people接口，返回people字符串
+router.get('/people', function (req, res, next) {
+    res.end("people");
+});
 
 module.exports = router;
