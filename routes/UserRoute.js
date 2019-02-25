@@ -33,5 +33,10 @@ router.get('/hello', function (req, res, next) {
 router.get('/people', function (req, res, next) {
     res.end("people");
 });
+//实现people接口，返回people字符串
+router.get('/number', function (req, res, next) {
+    res.end("afang num0");
+});
+
 
 module.exports = router;
