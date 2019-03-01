@@ -1,13 +1,16 @@
+// user持久化操作，用来读写user对象
+
 var dbPath = "data/users.json";
 var fs = require('fs');
 
 
+
 function UserServiceImpl() {
+    // 存储数据到json文件
     this.save = function (user) {
         var data = fs.readFileSync(dbPath);
-        var users = null;
         try {
-            users = JSON.parse(data);
+            var users = JSON.parse(data);
         }catch (e) {
             console.log("读取数据失败", e);
             users = [];
@@ -19,8 +22,10 @@ function UserServiceImpl() {
         fs.writeFileSync(dbPath, JSON.stringify(users));
     };
 
+    // 存储图片到images文件夹中
 
 
+    //查找所有用户
     this.findUsers = function (page, size) {
         var data = fs.readFileSync(dbPath);
         var users = JSON.parse(data);
@@ -38,16 +43,23 @@ function UserServiceImpl() {
     //{"name":"wcq","pwd":"123"},{"name":"wcq","pwd":"123"}
     // 根据用户名和密码查找用户，如果存在，返回该对象。如果不存在，返回 null；
     this.find = function (name, pwd) {
+        //从文件里面读取数据
         var data = fs.readFileSync(dbPath);
         var users = JSON.parse(data);
-        console.log(users)
+        console.log(users);
+        var result = [];
         for (var i = 0; i < users.length; i++) {
+            console.log(users[i]["name"], "   ", users[i]["pwd"]);
             if (users[i]["name"] == name && users[i]["pwd"] == pwd) {
-                return users[i];
-            }else{
-               return null;
+                result = users[i];
             }
         }
+        if (result.length == 0) {
+            return null;
+        }else{
+            return result;
+        }
+
     }
 }
 
