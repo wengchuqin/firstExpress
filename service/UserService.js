@@ -47,19 +47,13 @@ function UserServiceImpl() {
         var data = fs.readFileSync(dbPath);
         var users = JSON.parse(data);
         console.log(users);
-        var result = [];
         for (var i = 0; i < users.length; i++) {
             console.log(users[i]["name"], "   ", users[i]["pwd"]);
             if (users[i]["name"] == name && users[i]["pwd"] == pwd) {
-                result = users[i];
+                return users[i];
             }
         }
-        if (result.length == 0) {
-            return null;
-        }else{
-            return result;
-        }
-
+        return null;
     }
 }
 
