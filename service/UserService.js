@@ -36,6 +36,7 @@ function UserServiceImpl() {
             ret.push(users[i]);
         }
 
+
         return ret;
     };
 
@@ -44,15 +45,17 @@ function UserServiceImpl() {
     // 根据用户名和密码查找用户，如果存在，返回该对象。如果不存在，返回 null；
     this.find = function (name, pwd) {
         //从文件里面读取数据
+        console.log("进入find， 参数name:%s, pwd:%s", name, pwd);
         var data = fs.readFileSync(dbPath);
         var users = JSON.parse(data);
-        console.log(users);
         for (var i = 0; i < users.length; i++) {
-            console.log(users[i]["name"], "   ", users[i]["pwd"]);
+            console.log("find user[%s].name=%s, user[%s].pwd=%s", i, users[i]["name"], i, users[i]["pwd"]);
             if (users[i]["name"] == name && users[i]["pwd"] == pwd) {
+                console.log("找到了", users[i]);
                 return users[i];
             }
         }
+        console.log("找不到，返回null")
         return null;
     }
 }

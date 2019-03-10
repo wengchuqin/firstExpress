@@ -9,8 +9,9 @@ userService = new UserServiceImpl();
 // })
 
 //
-// var users = userService.findUsers(2, 3);
-// console.log(users);
+
+var users = userService.findUsers(4, 3);
+console.log(users);
 
 
 var assert = require('assert');

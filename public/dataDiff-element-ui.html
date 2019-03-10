@@ -14,28 +14,54 @@
 
 <body>
 <div id="app">
-    <el-container>
-        <el-header height="20">
-            <h1>PS-ORG数据对比结果</h1>
-        </el-header>
-        <el-main>
-            <el-input placeholder="回车添加待办事项" class="todoinput" @keyup.enter.native="add"
-                      v-model="newtodo.content"></el-input>
-            <p>进行中：{{ todolist.length }} 已完成：{{ donenum }}</p>
-            <el-row v-for="(item, index) in todolist" class="list-row">
-                <el-col :xs="2" :sm="1" :md="1" :lg="1" :xl="1" class="check"
-                        :class="{ red: !todolist[index].done, 'green': todolist[index].done }">
-                    <el-checkbox size="mini" v-model="item.done"></el-checkbox>
-                </el-col>
-                <el-col :xs="20" :sm="22" :md="22" :lg="22" :xl="22">
-                    <input type="text" v-model="item.content" class="ipcont" :class="{done: todolist[index].done}">
-                </el-col>
-                <el-col :xs="2" :sm="1" :md="1" :lg="1" :xl="1" class="close">
-                    <i class="el-icon-close" @click="del(index)"></i>
-                </el-col>
-            </el-row>
-        </el-main>
-    </el-container>
+    <div class="search">
+        <el-form :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
+            <el-form-item
+                    prop="email"
+                    label="邮箱"
+                    :rules="[
+      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+      { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+    ]"
+            >
+                <el-input v-model="dynamicValidateForm.email"></el-input>
+            </el-form-item>
+
+            <el-form-item
+                    v-for="(domain, index) in dynamicValidateForm.domains"
+                    :label="'域名' + index"
+                    :key="domain.key"
+                    :prop="'domains.' + index + '.value'"
+                    :rules="{
+      required: true, message: '域名不能为空', trigger: 'blur'
+    }"
+            >
+                <el-input v-model="domain.value"></el-input>
+                <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
+                <el-button @click="addDomain">新增域名</el-button>
+                <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+            </el-form-item>
+        </el-form>
+
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="审批人">
+                <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+            </el-form-item>
+            <el-form-item label="活动区域">
+                <el-select v-model="formInline.region" placeholder="活动区域">
+                    <el-option label="区域一" value="shanghai"></el-option>
+                    <el-option label="区域二" value="beijing"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">查询</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 </div>
 </body>
 </html>
@@ -43,34 +69,82 @@
     var doit = new Vue({
         el: '#app',
         data: {
-            newtodo: {
-                content: '',
-                done: false
+            dynamicValidateForm: {
+                domains: [{
+                    value: ''
+                }],
+                email: ''
             },
-            todolist: [
-                {
-                    content: '现在开始吧',
-                    done: false
-                }
-            ]
-        },
-        methods: {
-            add: function () {
-                if (this.newtodo.content) {
-                    this.todolist.push(this.newtodo)
-                    this.newtodo = {content: '', done: false}
-                }
-            },
-            del: function (index) {
-                this.todolist.splice(index, 1)
+            formInline: {
+                user: '',
+                region: ''
             }
         },
-        computed: {
-            donenum: function () {
-                return this.todolist.filter(function (val) {
-                    return val.done
-                }).length
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+            removeDomain(item) {
+                var index = this.dynamicValidateForm.domains.indexOf(item)
+                if (index !== -1) {
+                    this.dynamicValidateForm.domains.splice(index, 1)
+                }
+            },
+            addDomain() {
+                this.dynamicValidateForm.domains.push({
+                    value: '',
+                    key: Date.now()
+                });
             }
         }
     })
 </script>
+<style>
+    .search {
+        width: 600px;
+        margin: 0 auto;
+    }
+    .taskId {
+        text-align: right;
+    }
+
+    .el-row {
+        margin-bottom: 20px;
+    }
+
+    .el-col {
+        border-radius: 4px;
+    }
+
+    .bg-purple-dark {
+        background: #99a9bf;
+    }
+
+    .bg-purple {
+        background: #d3dce6;
+    }
+
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
+
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
+    }
+
+    .row-bg {
+        padding: 10px 0;
+        background-color: #f9fafc;
+    }
+</style>

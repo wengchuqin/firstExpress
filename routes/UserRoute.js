@@ -33,12 +33,12 @@ router.get('/findUsers', function (req, res, next) {
 
 // 用post实现登录
 router.post('/login', function (req, res, next) {
-
-    res.write(req.body)
-    res.end( "login");
-    // var user = userService.find(req.body.name, req.body.pwd);
+    console.log("/login req.body.name:%s, req.body.pwd:%s", req.body.name , req.body.pwd) ;
+    var user = userService.find(req.body.name, req.body.pwd);
+    console.log(user) 
+    res.send(user);
     // 响应给浏览器：
-    // res.end( JSON.stringify(user));
+    // res.json( JSON.stringify(user));
 });
 
 
@@ -50,13 +50,9 @@ router.get('/hello', function (req, res, next) {
 // 获取当前登录用户
 router.get('/user/loginUser', function (req, res, next) {
     // 为什么无法获取 req.body
-    res.end( "loginUser");
+    res.end( "进入loginUser了");
 });
 
-// 获取当前用户
-router.get('/user/loginUser', function (req, res, next) {
-    res.end( "loginUser");
-});
 // 照片上传的接口，图片来了就存到data中的img文件夹中
 // router.get('/files/fileUpload', function (req, res, next) {
 //
@@ -82,15 +78,6 @@ router.get('/user/loginUser', function (req, res, next) {
 //         desc: '成功导入'+files.length+ '张图片'
 //     });
 // });
-
-router.post('/hello', function (req, res, next) {
-
-    res.write(req.body)
-    res.end( "login");
-    // var user = userService.find(req.body.name, req.body.pwd);
-    // 响应给浏览器：
-    // res.end( JSON.stringify(user));
-});
 
 
 
